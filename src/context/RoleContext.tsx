@@ -48,7 +48,7 @@ export const PERSONAS: Record<UserRole, Persona> = {
 interface RoleContextType {
   role: UserRole;
   persona: Persona;
-  setRole: (role: UserRole) => void;
+  setRole: (role: UserRole, customPersona?: Partial<Persona>) => void;
   canAccessRoute: (pathname: string) => boolean;
 }
 
@@ -59,7 +59,8 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [role, setRoleState] = useState<UserRole>("ADMIN");
-  const [isPending, startTransition] = useTransition();
+  const [customPersona, setCustomPersona] = useState<Persona | null>(null);
+  const [, startTransition] = useTransition();
 
   // Read initial role from URL query param or localStorage
   useEffect(() => {
@@ -78,7 +79,7 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
 
   const canAccessRoute = (targetPath: string): boolean => {
     if (role === "CUSTOMER") {
-      return targetPath.startsWith("/portal");
+      return targetPath.startsWith("/portal") || targetPath.startsWith("/subscriptions") || targetPath.startsWith("/invoices");
     }
     if (role === "STAFF") {
       return !targetPath.startsWith("/products");
@@ -86,16 +87,34 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     return true;
   };
 
-  const setRole = (newRole: UserRole) => {
+  const setRole = (newRole: UserRole, custom?: Partial<Persona>) => {
     setRoleState(newRole);
     localStorage.setItem("outloop_role", newRole);
+
+    if (custom) {
+      const initials = (custom.name || "User")
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+
+      const merged: Persona = {
+        ...PERSONAS[newRole],
+        ...custom,
+        initials,
+      };
+      setCustomPersona(merged);
+    } else {
+      setCustomPersona(null);
+    }
 
     startTransition(() => {
       const params = new URLSearchParams(searchParams.toString());
       params.set("role", newRole.toLowerCase());
 
       // Route protection redirect when switching to customer or staff
-      if (newRole === "CUSTOMER" && !pathname.startsWith("/portal")) {
+      if (newRole === "CUSTOMER" && !pathname.startsWith("/portal") && !pathname.startsWith("/subscriptions") && !pathname.startsWith("/invoices")) {
         router.push(`/portal?${params.toString()}`);
       } else if (newRole === "STAFF" && pathname.startsWith("/products")) {
         router.push(`/?${params.toString()}`);
@@ -107,11 +126,15 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const activePersona = customPersona && customPersona.role === role
+    ? customPersona
+    : PERSONAS[role];
+
   return (
     <RoleContext.Provider
       value={{
         role,
-        persona: PERSONAS[role],
+        persona: activePersona,
         setRole,
         canAccessRoute,
       }}

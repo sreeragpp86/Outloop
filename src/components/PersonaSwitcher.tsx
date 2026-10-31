@@ -136,6 +136,23 @@ export function PersonaSwitcher() {
               );
             })}
           </div>
+
+          <div className="border-t border-zinc-100 p-2 dark:border-zinc-800 flex items-center justify-between text-[11px]">
+            <a
+              href="/login"
+              onClick={() => setIsOpen(false)}
+              className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 font-medium px-1.5 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            >
+              Sign In
+            </a>
+            <a
+              href="/signup"
+              onClick={() => setIsOpen(false)}
+              className="text-zinc-900 dark:text-zinc-100 font-semibold px-1.5 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            >
+              Create Account →
+            </a>
+          </div>
         </div>
       )}
     </div>
