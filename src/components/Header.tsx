@@ -10,7 +10,7 @@ import {
   Repeat,
   Receipt,
   Package,
-  UserCircle2,
+  Users,
 } from "lucide-react";
 
 export function Header() {
@@ -40,6 +40,12 @@ export function Header() {
       label: "Products & Plans",
       href: "/products",
       icon: Package,
+      roles: ["ADMIN"],
+    },
+    {
+      label: "Staff Directory",
+      href: "/settings/staff",
+      icon: Users,
       roles: ["ADMIN"],
     },
   ];
@@ -93,7 +99,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           {role === "STAFF" && (
             <span className="hidden lg:inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">
-              Admin Catalog Locked
+              Admin Restricted
             </span>
           )}
 

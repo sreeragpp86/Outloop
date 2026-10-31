@@ -77,12 +77,17 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     }
   }, [searchParams]);
 
+  // guardrail: check role route permissions
   const canAccessRoute = (targetPath: string): boolean => {
     if (role === "CUSTOMER") {
-      return targetPath.startsWith("/portal") || targetPath.startsWith("/subscriptions") || targetPath.startsWith("/invoices");
+      return (
+        targetPath.startsWith("/portal") ||
+        targetPath.startsWith("/subscriptions") ||
+        targetPath.startsWith("/invoices")
+      );
     }
     if (role === "STAFF") {
-      return !targetPath.startsWith("/products");
+      return !targetPath.startsWith("/products") && !targetPath.startsWith("/settings");
     }
     return true;
   };
@@ -113,10 +118,18 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
       const params = new URLSearchParams(searchParams.toString());
       params.set("role", newRole.toLowerCase());
 
-      // Route protection redirect when switching to customer or staff
-      if (newRole === "CUSTOMER" && !pathname.startsWith("/portal") && !pathname.startsWith("/subscriptions") && !pathname.startsWith("/invoices")) {
+      // Route protection redirect when switching persona
+      if (
+        newRole === "CUSTOMER" &&
+        !pathname.startsWith("/portal") &&
+        !pathname.startsWith("/subscriptions") &&
+        !pathname.startsWith("/invoices")
+      ) {
         router.push(`/portal?${params.toString()}`);
-      } else if (newRole === "STAFF" && pathname.startsWith("/products")) {
+      } else if (
+        newRole === "STAFF" &&
+        (pathname.startsWith("/products") || pathname.startsWith("/settings"))
+      ) {
         router.push(`/?${params.toString()}`);
       } else if (newRole !== "CUSTOMER" && pathname.startsWith("/portal")) {
         router.push(`/?${params.toString()}`);
@@ -126,9 +139,8 @@ export function RoleProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const activePersona = customPersona && customPersona.role === role
-    ? customPersona
-    : PERSONAS[role];
+  const activePersona =
+    customPersona && customPersona.role === role ? customPersona : PERSONAS[role];
 
   return (
     <RoleContext.Provider

@@ -1,5 +1,5 @@
 import React from "react";
-import { SubscriptionStage, InvoiceStatus } from "@/types/database";
+import { SubscriptionStage, InvoiceStatus, UserRole } from "@/types/database";
 
 interface StatusBadgeProps {
   stage: SubscriptionStage;
@@ -61,7 +61,35 @@ export function InvoiceStatusBadge({ status, isOverdue = false }: InvoiceStatusB
       className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium tracking-wide uppercase font-mono ${getStyles()}`}
     >
       <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-current opacity-70" />
-      {isOverdue && status !== "PAID" ? "OVERDUE" : status}
+      {isOverdue && status !== "PAID" && status !== "CANCELLED" ? "OVERDUE" : status}
+    </span>
+  );
+}
+
+interface RoleBadgeProps {
+  role: UserRole | string;
+}
+
+export function RoleBadge({ role }: RoleBadgeProps) {
+  const normalized = (role || "").toUpperCase();
+  const getStyles = () => {
+    switch (normalized) {
+      case "ADMIN":
+        return "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20";
+      case "STAFF":
+        return "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20";
+      case "CUSTOMER":
+      default:
+        return "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20";
+    }
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium tracking-wide uppercase font-mono ${getStyles()}`}
+    >
+      <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-current opacity-70" />
+      {normalized}
     </span>
   );
 }
