@@ -25,7 +25,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
 
   const transaction = db.transaction(() => {
     // --------------------------------------------------------------------------
-    // 1. Profiles (3 Personas)
+    // 1. Profiles (5 Personas: Admin, Staff, and 3 Enterprise Customers)
     // --------------------------------------------------------------------------
     const insertProfile = db.prepare(`
       INSERT INTO profiles (id, name, email, role, created_at)
@@ -35,6 +35,8 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
     insertProfile.run("11111111-1111-4111-a111-111111111111", "Sarah Connor", "admin@brightloop.io", "ADMIN", "2025-10-01T08:00:00Z");
     insertProfile.run("22222222-2222-4222-a222-222222222222", "Alex Rivera", "staff@brightloop.io", "STAFF", "2025-10-05T09:30:00Z");
     insertProfile.run("33333333-3333-4333-a333-333333333333", "Acme Corp / Liam Patel", "liam@acme.com", "CUSTOMER", "2025-10-10T14:15:00Z");
+    insertProfile.run("44444444-4444-4444-a444-444444444444", "Nexura Logistics / Marcus Chen", "ops@nexura.io", "CUSTOMER", "2025-10-12T10:00:00Z");
+    insertProfile.run("55555555-5555-4555-a555-555555555555", "Starlight Media / Maya Lin", "finance@starlight.co", "CUSTOMER", "2025-10-15T11:30:00Z");
 
     // --------------------------------------------------------------------------
     // 2. Products (3 Offerings)
@@ -76,7 +78,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
     );
 
     // --------------------------------------------------------------------------
-    // 3. Product Variants (Enterprise Edition on ERP Connector)
+    // 3. Product Variants (Brand: Odoo Variant on ERP Connector)
     // --------------------------------------------------------------------------
     const insertVariant = db.prepare(`
       INSERT INTO product_variants (id, product_id, variant_name, extra_price, created_at)
@@ -86,7 +88,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
     insertVariant.run(
       "b0000000-0000-4000-8000-000000000001",
       "a0000000-0000-4000-8000-000000000003",
-      "Enterprise Edition",
+      "Brand: Odoo",
       560.00,
       "2025-10-01T08:00:00Z"
     );
@@ -181,7 +183,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // 1) ACTIVE: SUB-2026-001
+    // 1) ACTIVE: SUB-2026-001 (Acme Corp)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000001",
       "SUB-2026-001",
@@ -199,11 +201,11 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-01-01T09:00:00Z"
     );
 
-    // 2) PAUSED: SUB-2026-002
+    // 2) PAUSED: SUB-2026-002 (Nexura Logistics)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000002",
       "SUB-2026-002",
-      "33333333-3333-4333-a333-333333333333",
+      "44444444-4444-4444-a444-444444444444",
       "c0000000-0000-4000-8000-000000000001",
       null,
       "PAUSED",
@@ -217,11 +219,11 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-02-01T10:00:00Z"
     );
 
-    // 3) CONFIRMED: SUB-2026-003
+    // 3) CONFIRMED: SUB-2026-003 (Starlight Media)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000003",
       "SUB-2026-003",
-      "33333333-3333-4333-a333-333333333333",
+      "55555555-5555-4555-a555-555555555555",
       "c0000000-0000-4000-8000-000000000003",
       "d0000000-0000-4000-8000-000000000002",
       "CONFIRMED",
@@ -235,11 +237,11 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-10-25T11:00:00Z"
     );
 
-    // 4) QUOTATION: SUB-2026-004
+    // 4) QUOTATION: SUB-2026-004 (Nexura Logistics)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000004",
       "SUB-2026-004",
-      "33333333-3333-4333-a333-333333333333",
+      "44444444-4444-4444-a444-444444444444",
       "c0000000-0000-4000-8000-000000000001",
       null,
       "QUOTATION",
@@ -253,11 +255,11 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-10-28T14:30:00Z"
     );
 
-    // 5) DRAFT: SUB-2026-005
+    // 5) DRAFT: SUB-2026-005 (Starlight Media)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000005",
       "SUB-2026-005",
-      "33333333-3333-4333-a333-333333333333",
+      "55555555-5555-4555-a555-555555555555",
       "c0000000-0000-4000-8000-000000000001",
       null,
       "DRAFT",
@@ -271,7 +273,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-10-30T16:00:00Z"
     );
 
-    // 6) CLOSED: SUB-2026-006
+    // 6) CLOSED: SUB-2026-006 (Acme Corp)
     insertSubscription.run(
       "e0000000-0000-4000-8000-000000000006",
       "SUB-2026-006",
@@ -326,7 +328,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    // 1) PAID: INV-2026-001
+    // 1) PAID: INV-2026-001 (Acme Corp)
     insertInvoice.run(
       "f0000000-0000-4000-8000-000000000001",
       "INV-2026-001",
@@ -342,7 +344,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-01-01T09:05:00Z"
     );
 
-    // 2) PAID: INV-2026-002
+    // 2) PAID: INV-2026-002 (Acme Corp)
     insertInvoice.run(
       "f0000000-0000-4000-8000-000000000002",
       "INV-2026-002",
@@ -358,12 +360,12 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2024-10-01T09:05:00Z"
     );
 
-    // 3) CONFIRMED (PAST DUE): INV-2026-003
+    // 3) CONFIRMED (PAST DUE): INV-2026-003 (Nexura Logistics)
     insertInvoice.run(
       "f0000000-0000-4000-8000-000000000003",
       "INV-2026-003",
       "e0000000-0000-4000-8000-000000000002",
-      "33333333-3333-4333-a333-333333333333",
+      "44444444-4444-4444-a444-444444444444",
       "CONFIRMED",
       170.00,
       30.60,
@@ -374,12 +376,12 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-10-01T10:00:00Z"
     );
 
-    // 4) CONFIRMED: INV-2026-004
+    // 4) CONFIRMED: INV-2026-004 (Starlight Media)
     insertInvoice.run(
       "f0000000-0000-4000-8000-000000000004",
       "INV-2026-004",
       "e0000000-0000-4000-8000-000000000003",
-      "33333333-3333-4333-a333-333333333333",
+      "55555555-5555-4555-a555-555555555555",
       "CONFIRMED",
       2820.00,
       417.60,
@@ -390,12 +392,12 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
       "2026-10-25T11:15:00Z"
     );
 
-    // 5) DRAFT: INV-2026-005
+    // 5) DRAFT: INV-2026-005 (Nexura Logistics)
     insertInvoice.run(
       "f0000000-0000-4000-8000-000000000005",
       "INV-2026-005",
       "e0000000-0000-4000-8000-000000000004",
-      "33333333-3333-4333-a333-333333333333",
+      "44444444-4444-4444-a444-444444444444",
       "DRAFT",
       205.00,
       36.90,

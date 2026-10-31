@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { X, Play, Loader2, CheckCircle2, AlertCircle, ShieldCheck, RefreshCw } from "lucide-react";
+import { useToast } from "@/context/ToastContext";
 
 interface BillingRunModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export function BillingRunModal({
   onClose,
   onRunComplete,
 }: BillingRunModalProps) {
+  const { toast } = useToast();
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<{
     message: string;
@@ -45,9 +47,11 @@ export function BillingRunModal({
         skippedCount: data.skipped_count,
       });
 
+      toast(`Billing run completed: ${data.created_count} invoice(s) generated`, "success");
       onRunComplete();
     } catch (err: any) {
       setError(err.message || "Failed to execute billing run");
+      toast(err.message || "Failed to execute billing run", "error");
     } finally {
       setRunning(false);
     }

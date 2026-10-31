@@ -22,7 +22,7 @@ export async function runVerification(options?: { inMemory?: boolean; dbPath?: s
 
   // 1. Audit Table Row Counts
   const expectedCounts: Record<string, number> = {
-    profiles: 3,
+    profiles: 5,
     products: 3,
     product_variants: 1,
     plans: 3,

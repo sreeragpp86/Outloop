@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { X, DollarSign, CreditCard, Calendar, FileText, Loader2, CheckCircle2 } from "lucide-react";
+import { useToast } from "@/context/ToastContext";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export function PaymentModal({
   onClose,
   onPaymentSuccess,
 }: PaymentModalProps) {
+  const { toast } = useToast();
   const [amount, setAmount] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("Bank Transfer");
   const [paymentDate, setPaymentDate] = useState<string>("");
@@ -70,10 +72,12 @@ export function PaymentModal({
         throw new Error(data.error || "Failed to record payment");
       }
 
+      toast(`Payment of $${parsedAmount.toFixed(2)} recorded successfully`, "success");
       onPaymentSuccess();
       onClose();
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
+      toast(err.message || "Failed to record payment", "error");
     } finally {
       setLoading(false);
     }

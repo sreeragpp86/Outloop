@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRole } from "@/context/RoleContext";
+import { useToast } from "@/context/ToastContext";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { RoleBadge } from "@/components/ui/StatusBadge";
@@ -30,6 +31,7 @@ interface StaffProfile {
 
 export default function StaffSettingsPage() {
   const { role, setRole } = useRole();
+  const { toast } = useToast();
 
   const [staff, setStaff] = useState<StaffProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,9 +78,10 @@ export default function StaffSettingsPage() {
 
       setStaff((prev) => prev.filter((s) => s.id !== id));
       setToastMessage(`Access revoked for ${name}.`);
+      toast(`Access revoked for ${name}.`, "success");
       setTimeout(() => setToastMessage(null), 4000);
     } catch (err: any) {
-      alert(err.message || "Failed to revoke staff access.");
+      toast(err.message || "Failed to revoke staff access.", "error");
     } finally {
       setDeletingId(null);
     }

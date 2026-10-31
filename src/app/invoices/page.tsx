@@ -17,6 +17,7 @@ import {
   Download,
 } from 'lucide-react';
 import { useRole } from '@/context/RoleContext';
+import { useToast } from '@/context/ToastContext';
 import { InvoiceStatusBadge } from '@/components/ui/StatusBadge';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { MetricCard } from '@/components/ui/MetricCard';
@@ -49,6 +50,7 @@ type FilterTab = 'ALL' | 'DRAFT' | 'CONFIRMED' | 'PAID' | 'OVERDUE';
 export default function InvoicesPage() {
   const router = useRouter();
   const { role, persona } = useRole();
+  const { toast } = useToast();
 
   const [invoices, setInvoices] = useState<InvoiceListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -173,6 +175,7 @@ export default function InvoicesPage() {
       inv.paid_at ? inv.paid_at.slice(0, 10) : '—',
     ]);
     exportToCsv(`brightloop-invoices-${today}.csv`, headers, rows);
+    toast(`Exported ${filteredInvoices.length} invoices to CSV`, "info");
   };
 
   return (

@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useRole } from "@/context/RoleContext";
+import { useToast } from "@/context/ToastContext";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge, InvoiceStatusBadge } from "@/components/ui/StatusBadge";
@@ -51,6 +52,7 @@ interface InvItem {
 export default function DashboardPage() {
   const router = useRouter();
   const { role } = useRole();
+  const { toast } = useToast();
 
   const [subscriptions, setSubscriptions] = useState<SubItem[]>([]);
   const [invoices, setInvoices] = useState<InvItem[]>([]);
@@ -168,6 +170,7 @@ export default function DashboardPage() {
     setChasedInvoices((prev) => ({ ...prev, [inv.id]: true }));
     const customerEmail = inv.customer?.email || "billing contact";
     setToastMessage(`Payment reminder successfully dispatched for ${inv.invoice_number} to ${customerEmail}`);
+    toast(`Payment reminder dispatched to ${customerEmail}`, "success");
     setTimeout(() => setToastMessage(null), 4000);
   };
 

@@ -12,6 +12,7 @@ import {
   Download
 } from 'lucide-react';
 import { useRole } from '@/context/RoleContext';
+import { useToast } from '@/context/ToastContext';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { NewSubscriptionDrawer } from '@/components/subscriptions/NewSubscriptionDrawer';
@@ -43,6 +44,7 @@ type FilterTab = 'ALL' | 'QUOTES' | 'ACTIVE' | 'PAUSED' | 'CLOSED';
 export default function SubscriptionsPage() {
   const router = useRouter();
   const { role, persona } = useRole();
+  const { toast } = useToast();
   const [subscriptions, setSubscriptions] = useState<SubscriptionSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<FilterTab>('ALL');
@@ -140,6 +142,7 @@ export default function SubscriptionsPage() {
       sub.created_at ? sub.created_at.slice(0, 10) : '',
     ]);
     exportToCsv(`brightloop-subscriptions-${today}.csv`, headers, rows);
+    toast(`Exported ${filteredSubscriptions.length} subscriptions to CSV`, "info");
   };
 
   return (

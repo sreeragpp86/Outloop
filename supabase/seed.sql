@@ -15,12 +15,14 @@ DELETE FROM products;
 DELETE FROM profiles;
 
 -- ------------------------------------------------------------------------------
--- 1. PROFILES (3 Personas: Admin, Staff, Customer)
+-- 1. PROFILES (5 Personas: Admin, Staff, and 3 Enterprise Customers)
 -- ------------------------------------------------------------------------------
 INSERT INTO profiles (id, name, email, role, created_at) VALUES
 ('11111111-1111-4111-a111-111111111111', 'Sarah Connor', 'admin@brightloop.io', 'ADMIN', '2025-10-01T08:00:00Z'),
 ('22222222-2222-4222-a222-222222222222', 'Alex Rivera', 'staff@brightloop.io', 'STAFF', '2025-10-05T09:30:00Z'),
-('33333333-3333-4333-a333-333333333333', 'Acme Corp / Liam Patel', 'liam@acme.com', 'CUSTOMER', '2025-10-10T14:15:00Z');
+('33333333-3333-4333-a333-333333333333', 'Acme Corp / Liam Patel', 'liam@acme.com', 'CUSTOMER', '2025-10-10T14:15:00Z'),
+('44444444-4444-4444-a444-444444444444', 'Nexura Logistics / Marcus Chen', 'ops@nexura.io', 'CUSTOMER', '2025-10-12T10:00:00Z'),
+('55555555-5555-4555-a555-555555555555', 'Starlight Media / Maya Lin', 'finance@starlight.co', 'CUSTOMER', '2025-10-15T11:30:00Z');
 
 -- ------------------------------------------------------------------------------
 -- 2. PRODUCTS (3 Core Offerings)
@@ -31,10 +33,10 @@ INSERT INTO products (id, name, product_type, sales_price, cost_price, tax_rate,
 ('a0000000-0000-4000-8000-000000000003', 'Enterprise ERP Connector', 'SERVICE', 250.00, 60.00, 18.00, 'Bidirectional ERP synchronization gateway with custom schema mapping', '2025-10-01T08:00:00Z');
 
 -- ------------------------------------------------------------------------------
--- 3. PRODUCT VARIANTS (Enterprise Edition Variant for Enterprise ERP Connector)
+-- 3. PRODUCT VARIANTS (Brand: Odoo Variant for Enterprise ERP Connector)
 -- ------------------------------------------------------------------------------
 INSERT INTO product_variants (id, product_id, variant_name, extra_price, created_at) VALUES
-('b0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', 'Enterprise Edition', 560.00, '2025-10-01T08:00:00Z');
+('b0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', 'Brand: Odoo', 560.00, '2025-10-01T08:00:00Z');
 
 -- ------------------------------------------------------------------------------
 -- 4. PLANS (3 Enterprise Recurring Cadences)
@@ -54,27 +56,27 @@ INSERT INTO discounts (id, code, discount_type, value, min_quantity, min_amount,
 -- ------------------------------------------------------------------------------
 -- 6. SUBSCRIPTIONS (6 Subscriptions Across All 6 Stages)
 -- ------------------------------------------------------------------------------
--- 1) ACTIVE: SUB-2026-001 (Growth Yearly + BULK10)
+-- 1) ACTIVE: SUB-2026-001 (Growth Yearly + BULK10) - Acme Corp
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
 ('e0000000-0000-4000-8000-000000000001', 'SUB-2026-001', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000002', 'd0000000-0000-4000-8000-000000000001', 'ACTIVE', '2026-01-01', '2026-12-31', 'Immediate Payment', 1410.00, 228.42, 141.00, 1497.42, '2026-01-01T09:00:00Z');
 
--- 2) PAUSED: SUB-2026-002 (Starter Monthly)
+-- 2) PAUSED: SUB-2026-002 (Starter Monthly) - Nexura Logistics
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
-('e0000000-0000-4000-8000-000000000002', 'SUB-2026-002', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000001', NULL, 'PAUSED', '2026-02-01', '2026-08-01', '15 Days', 170.00, 30.60, 0.00, 200.60, '2026-02-01T10:00:00Z');
+('e0000000-0000-4000-8000-000000000002', 'SUB-2026-002', '44444444-4444-4444-a444-444444444444', 'c0000000-0000-4000-8000-000000000001', NULL, 'PAUSED', '2026-02-01', '2026-08-01', '15 Days', 170.00, 30.60, 0.00, 200.60, '2026-02-01T10:00:00Z');
 
--- 3) CONFIRMED: SUB-2026-003 (Enterprise Scale + SCALE500)
+-- 3) CONFIRMED: SUB-2026-003 (Enterprise Scale + SCALE500) - Starlight Media
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
-('e0000000-0000-4000-8000-000000000003', 'SUB-2026-003', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000003', 'd0000000-0000-4000-8000-000000000002', 'CONFIRMED', '2026-11-01', '2027-10-31', '30 Days Net', 2820.00, 417.60, 500.00, 2737.60, '2026-10-25T11:00:00Z');
+('e0000000-0000-4000-8000-000000000003', 'SUB-2026-003', '55555555-5555-4555-a555-555555555555', 'c0000000-0000-4000-8000-000000000003', 'd0000000-0000-4000-8000-000000000002', 'CONFIRMED', '2026-11-01', '2027-10-31', '30 Days Net', 2820.00, 417.60, 500.00, 2737.60, '2026-10-25T11:00:00Z');
 
--- 4) QUOTATION: SUB-2026-004 (Starter Monthly Proposal)
+-- 4) QUOTATION: SUB-2026-004 (Starter Monthly Proposal) - Nexura Logistics
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
-('e0000000-0000-4000-8000-000000000004', 'SUB-2026-004', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000001', NULL, 'QUOTATION', '2026-11-01', '2027-04-30', 'Immediate Payment', 205.00, 36.90, 0.00, 241.90, '2026-10-28T14:30:00Z');
+('e0000000-0000-4000-8000-000000000004', 'SUB-2026-004', '44444444-4444-4444-a444-444444444444', 'c0000000-0000-4000-8000-000000000001', NULL, 'QUOTATION', '2026-11-01', '2027-04-30', 'Immediate Payment', 205.00, 36.90, 0.00, 241.90, '2026-10-28T14:30:00Z');
 
--- 5) DRAFT: SUB-2026-005 (Starter Monthly Draft)
+-- 5) DRAFT: SUB-2026-005 (Starter Monthly Draft) - Starlight Media
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
-('e0000000-0000-4000-8000-000000000005', 'SUB-2026-005', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000001', NULL, 'DRAFT', '2026-11-15', '2027-05-15', 'Immediate Payment', 255.00, 45.90, 0.00, 300.90, '2026-10-30T16:00:00Z');
+('e0000000-0000-4000-8000-000000000005', 'SUB-2026-005', '55555555-5555-4555-a555-555555555555', 'c0000000-0000-4000-8000-000000000001', NULL, 'DRAFT', '2026-11-15', '2027-05-15', 'Immediate Payment', 255.00, 45.90, 0.00, 300.90, '2026-10-30T16:00:00Z');
 
--- 6) CLOSED: SUB-2026-006 (Growth Yearly Historical Lifecycle Finished)
+-- 6) CLOSED: SUB-2026-006 (Growth Yearly Historical Lifecycle Finished) - Acme Corp
 INSERT INTO subscriptions (id, sub_number, customer_id, plan_id, discount_id, stage, start_date, expiry_date, payment_terms, subtotal, tax_total, discount_total, grand_total, created_at) VALUES
 ('e0000000-0000-4000-8000-000000000006', 'SUB-2026-006', '33333333-3333-4333-a333-333333333333', 'c0000000-0000-4000-8000-000000000002', NULL, 'CLOSED', '2024-10-01', '2025-09-30', 'Immediate Payment', 600.00, 108.00, 0.00, 708.00, '2024-10-01T09:00:00Z');
 
@@ -111,25 +113,25 @@ INSERT INTO subscription_lines (id, subscription_id, product_id, variant_id, qua
 -- ------------------------------------------------------------------------------
 -- 8. INVOICES (5 Invoices: 2 PAID, 2 CONFIRMED [1 Past Due], 1 DRAFT)
 -- ------------------------------------------------------------------------------
--- 1) PAID: INV-2026-001 (linked to SUB-2026-001)
+-- 1) PAID: INV-2026-001 (linked to SUB-2026-001) - Acme Corp
 INSERT INTO invoices (id, invoice_number, subscription_id, customer_id, status, subtotal, tax_amount, discount_amount, total_amount, due_date, paid_at, created_at) VALUES
 ('f0000000-0000-4000-8000-000000000001', 'INV-2026-001', 'e0000000-0000-4000-8000-000000000001', '33333333-3333-4333-a333-333333333333', 'PAID', 1410.00, 228.42, 141.00, 1497.42, '2026-01-15', '2026-01-14T10:30:00Z', '2026-01-01T09:05:00Z');
 
--- 2) PAID: INV-2026-002 (linked to SUB-2026-006 historical)
+-- 2) PAID: INV-2026-002 (linked to SUB-2026-006 historical) - Acme Corp
 INSERT INTO invoices (id, invoice_number, subscription_id, customer_id, status, subtotal, tax_amount, discount_amount, total_amount, due_date, paid_at, created_at) VALUES
 ('f0000000-0000-4000-8000-000000000002', 'INV-2026-002', 'e0000000-0000-4000-8000-000000000006', '33333333-3333-4333-a333-333333333333', 'PAID', 600.00, 108.00, 0.00, 708.00, '2025-10-01', '2025-09-30T14:15:00Z', '2024-10-01T09:05:00Z');
 
--- 3) CONFIRMED (PAST DUE): INV-2026-003 (linked to SUB-2026-002, Due: 2026-10-15)
+-- 3) CONFIRMED (PAST DUE): INV-2026-003 (linked to SUB-2026-002, Due: 2026-10-15) - Nexura Logistics
 INSERT INTO invoices (id, invoice_number, subscription_id, customer_id, status, subtotal, tax_amount, discount_amount, total_amount, due_date, paid_at, created_at) VALUES
-('f0000000-0000-4000-8000-000000000003', 'INV-2026-003', 'e0000000-0000-4000-8000-000000000002', '33333333-3333-4333-a333-333333333333', 'CONFIRMED', 170.00, 30.60, 0.00, 200.60, '2026-10-15', NULL, '2026-10-01T10:00:00Z');
+('f0000000-0000-4000-8000-000000000003', 'INV-2026-003', 'e0000000-0000-4000-8000-000000000002', '44444444-4444-4444-a444-444444444444', 'CONFIRMED', 170.00, 30.60, 0.00, 200.60, '2026-10-15', NULL, '2026-10-01T10:00:00Z');
 
--- 4) CONFIRMED: INV-2026-004 (linked to SUB-2026-003, Due: 2026-11-15)
+-- 4) CONFIRMED: INV-2026-004 (linked to SUB-2026-003, Due: 2026-11-15) - Starlight Media
 INSERT INTO invoices (id, invoice_number, subscription_id, customer_id, status, subtotal, tax_amount, discount_amount, total_amount, due_date, paid_at, created_at) VALUES
-('f0000000-0000-4000-8000-000000000004', 'INV-2026-004', 'e0000000-0000-4000-8000-000000000003', '33333333-3333-4333-a333-333333333333', 'CONFIRMED', 2820.00, 417.60, 500.00, 2737.60, '2026-11-15', NULL, '2026-10-25T11:15:00Z');
+('f0000000-0000-4000-8000-000000000004', 'INV-2026-004', 'e0000000-0000-4000-8000-000000000003', '55555555-5555-4555-a555-555555555555', 'CONFIRMED', 2820.00, 417.60, 500.00, 2737.60, '2026-11-15', NULL, '2026-10-25T11:15:00Z');
 
--- 5) DRAFT: INV-2026-005 (linked to SUB-2026-004, Due: 2026-11-30)
+-- 5) DRAFT: INV-2026-005 (linked to SUB-2026-004, Due: 2026-11-30) - Nexura Logistics
 INSERT INTO invoices (id, invoice_number, subscription_id, customer_id, status, subtotal, tax_amount, discount_amount, total_amount, due_date, paid_at, created_at) VALUES
-('f0000000-0000-4000-8000-000000000005', 'INV-2026-005', 'e0000000-0000-4000-8000-000000000004', '33333333-3333-4333-a333-333333333333', 'DRAFT', 205.00, 36.90, 0.00, 241.90, '2026-11-30', NULL, '2026-10-28T14:45:00Z');
+('f0000000-0000-4000-8000-000000000005', 'INV-2026-005', 'e0000000-0000-4000-8000-000000000004', '44444444-4444-4444-a444-444444444444', 'DRAFT', 205.00, 36.90, 0.00, 241.90, '2026-11-30', NULL, '2026-10-28T14:45:00Z');
 
 -- ------------------------------------------------------------------------------
 -- 9. PAYMENTS (2 Payments for the 2 Paid Invoices)

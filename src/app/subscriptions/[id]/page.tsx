@@ -10,6 +10,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Save, ArrowLeft, Loader2, Check, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { SubscriptionStage } from "@/types/database";
+import { useToast } from "@/context/ToastContext";
 
 export default function SubscriptionDetailPage({
   params,
@@ -18,6 +19,7 @@ export default function SubscriptionDetailPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const { toast } = useToast();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -129,9 +131,11 @@ export default function SubscriptionDetailPage({
 
       setStage(newStage);
       setSuccessToast(`Lifecycle state updated to ${newStage}`);
+      toast(`Lifecycle state updated to ${newStage}`, "success");
       setTimeout(() => setSuccessToast(null), 4000);
     } catch (err: any) {
       setErrorToast(err.message);
+      toast(err.message, "error");
       setTimeout(() => setErrorToast(null), 5000);
     }
   };
@@ -169,9 +173,11 @@ export default function SubscriptionDetailPage({
       }
 
       setSuccessToast("Contract changes and calculations saved successfully.");
+      toast("Contract changes saved successfully.", "success");
       setTimeout(() => setSuccessToast(null), 4000);
     } catch (err: any) {
       setErrorToast(err.message || "Failed to save contract");
+      toast(err.message || "Failed to save contract", "error");
       setTimeout(() => setErrorToast(null), 5000);
     } finally {
       setSaving(false);

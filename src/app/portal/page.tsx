@@ -131,7 +131,7 @@ export default function CustomerPortalPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-900 text-white font-bold text-sm dark:bg-zinc-100 dark:text-zinc-900 font-mono">
-              AC
+              {persona.initials || "AC"}
             </div>
             <div>
               <div className="flex items-center gap-2">

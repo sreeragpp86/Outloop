@@ -18,6 +18,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
+import { useToast } from "@/context/ToastContext";
 import { InvoiceStatusBadge } from "@/components/ui/StatusBadge";
 import { PaymentModal } from "@/components/invoices/PaymentModal";
 
@@ -93,6 +94,7 @@ export default function InvoiceDetailPage({
   const { id } = use(params);
   const router = useRouter();
   const { role } = useRole();
+  const { toast } = useToast();
 
   const [invoice, setInvoice] = useState<InvoiceDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -136,9 +138,11 @@ export default function InvoiceDetailPage({
         type: "success",
         msg: `Invoice marked as ${newStatus.toLowerCase()}.`,
       });
+      toast(`Invoice marked as ${newStatus.toLowerCase()}.`, "success");
       fetchInvoice();
     } catch (err: any) {
       setFeedback({ type: "error", msg: err.message || "Failed to update invoice" });
+      toast(err.message || "Failed to update invoice", "error");
     } finally {
       setActionLoading(false);
     }

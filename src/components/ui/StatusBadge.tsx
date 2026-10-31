@@ -41,7 +41,7 @@ interface InvoiceStatusBadgeProps {
 export function InvoiceStatusBadge({ status, isOverdue = false }: InvoiceStatusBadgeProps) {
   const getStyles = () => {
     if (isOverdue && status !== "PAID" && status !== "CANCELLED") {
-      return "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/25";
+      return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30";
     }
     switch (status) {
       case "PAID":

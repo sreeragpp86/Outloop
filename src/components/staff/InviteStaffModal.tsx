@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { X, UserPlus, Mail, User, Shield, Loader2, CheckCircle2 } from "lucide-react";
+import { useToast } from "@/context/ToastContext";
 
 interface InviteStaffModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ export function InviteStaffModal({
   onClose,
   onStaffAdded,
 }: InviteStaffModalProps) {
+  const { toast } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"STAFF" | "ADMIN">("STAFF");
@@ -48,10 +50,12 @@ export function InviteStaffModal({
         throw new Error(data.error || "Failed to provision internal team member.");
       }
 
+      toast(`Team member ${name.trim()} successfully invited as ${role}`, "success");
       onStaffAdded(data.staff);
       onClose();
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred while inviting staff.");
+      toast(err.message || "Failed to invite staff member", "error");
     } finally {
       setLoading(false);
     }
