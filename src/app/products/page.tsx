@@ -91,7 +91,7 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <PageHeader
         title="Products & Subscription Plans"
-        description="Configure product catalogue, Odoo ERP connector variants, recurring cadences, and discount structures."
+        description="Configure product catalogue, enterprise connector variants, recurring cadences, and discount structures."
         breadcrumbs={[
           { label: "Dashboard", href: "/" },
           { label: "Products & Plans" },

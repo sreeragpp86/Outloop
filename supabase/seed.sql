@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- Brightloop Subscriptions (Outloop) - Enterprise Production Seed Data
--- Odoo x Make-A-Ton 9.0 Hackathon
+-- Brightloop Software Inc. - Enterprise Recurring Billing
 -- ==============================================================================
 
 -- Clean up any existing data in reverse dependency order
@@ -31,10 +31,10 @@ INSERT INTO products (id, name, product_type, sales_price, cost_price, tax_rate,
 ('a0000000-0000-4000-8000-000000000003', 'Enterprise ERP Connector', 'SERVICE', 250.00, 60.00, 18.00, 'Bidirectional ERP synchronization gateway with custom schema mapping', '2025-10-01T08:00:00Z');
 
 -- ------------------------------------------------------------------------------
--- 3. PRODUCT VARIANTS (Brand: Odoo Variant for Enterprise ERP Connector)
+-- 3. PRODUCT VARIANTS (Enterprise Edition Variant for Enterprise ERP Connector)
 -- ------------------------------------------------------------------------------
 INSERT INTO product_variants (id, product_id, variant_name, extra_price, created_at) VALUES
-('b0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', 'Brand: Odoo', 560.00, '2025-10-01T08:00:00Z');
+('b0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', 'Enterprise Edition', 560.00, '2025-10-01T08:00:00Z');
 
 -- ------------------------------------------------------------------------------
 -- 4. PLANS (3 Enterprise Recurring Cadences)

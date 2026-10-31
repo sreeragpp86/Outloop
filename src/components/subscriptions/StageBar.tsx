@@ -161,7 +161,7 @@ export function StageBar({ currentStage, canPause = true, onTransition }: StageB
         )}
       </div>
 
-      {/* Odoo ERP Chevron Pipeline Bar */}
+      {/* Lifecycle Stage Pipeline Bar */}
       <div className="flex items-center overflow-x-auto rounded-md border border-zinc-200/80 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-800/50">
         {ORDERED_STAGES.map((stg, index) => {
           const isActive = currentStage === stg;

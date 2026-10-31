@@ -53,7 +53,7 @@ export function Header() {
   const visibleItems = navItems.filter((item) => item.roles.includes(role));
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95 print:hidden">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-6">
           <Link href={role === "CUSTOMER" ? "/portal" : "/"} className="flex items-center gap-2.5">
@@ -65,7 +65,7 @@ export function Header() {
                 Outloop
               </span>
               <span className="hidden sm:inline-block rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                Odoo Sync
+                Enterprise
               </span>
             </div>
           </Link>

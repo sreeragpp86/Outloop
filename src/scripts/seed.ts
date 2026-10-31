@@ -1,7 +1,7 @@
 /**
  * Outloop / Brightloop Subscriptions
  * Automated Realistic Production Seed Script
- * Odoo x Make-A-Ton 9.0 Hackathon
+ * Brightloop Software Inc.
  */
 
 import { getDb, getLocalSchemaSql } from "../lib/db";
@@ -76,7 +76,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
     );
 
     // --------------------------------------------------------------------------
-    // 3. Product Variants (Brand: Odoo on ERP Connector)
+    // 3. Product Variants (Enterprise Edition on ERP Connector)
     // --------------------------------------------------------------------------
     const insertVariant = db.prepare(`
       INSERT INTO product_variants (id, product_id, variant_name, extra_price, created_at)
@@ -86,7 +86,7 @@ export async function runSeed(options?: { inMemory?: boolean; dbPath?: string })
     insertVariant.run(
       "b0000000-0000-4000-8000-000000000001",
       "a0000000-0000-4000-8000-000000000003",
-      "Brand: Odoo",
+      "Enterprise Edition",
       560.00,
       "2025-10-01T08:00:00Z"
     );

@@ -1,7 +1,7 @@
 /**
  * Outloop / Brightloop Subscriptions
- * Rigorous Schema & Seed Verification Script
- * Odoo x Make-A-Ton 9.0 Hackathon
+ * Enterprise Schema & Seed Verification Script
+ * Brightloop Software Inc.
  */
 
 import { getDb } from "../lib/db";

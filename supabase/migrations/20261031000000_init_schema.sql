@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- Brightloop Subscriptions (Outloop) - Core Relational Schema
--- Odoo x Make-A-Ton 9.0 Hackathon
+-- Enterprise Recurring Billing & Subscription Lifecycle Engine
 -- ==============================================================================
 
 -- Enable UUID extension if not already present
