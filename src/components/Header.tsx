@@ -19,34 +19,28 @@ export function Header() {
 
   const navItems = [
     {
-      label: "Dashboard",
-      href: "/",
+      label: role === "CUSTOMER" ? "Overview" : "Dashboard",
+      href: role === "CUSTOMER" ? "/portal" : "/",
       icon: LayoutDashboard,
-      roles: ["ADMIN", "STAFF"],
+      roles: ["ADMIN", "STAFF", "CUSTOMER"],
     },
     {
-      label: "Subscriptions",
+      label: role === "CUSTOMER" ? "My Subscriptions" : "Subscriptions",
       href: "/subscriptions",
       icon: Repeat,
-      roles: ["ADMIN", "STAFF"],
+      roles: ["ADMIN", "STAFF", "CUSTOMER"],
     },
     {
-      label: "Invoices & Billing",
+      label: role === "CUSTOMER" ? "My Invoices" : "Invoices & Billing",
       href: "/invoices",
       icon: Receipt,
-      roles: ["ADMIN", "STAFF"],
+      roles: ["ADMIN", "STAFF", "CUSTOMER"],
     },
     {
       label: "Products & Plans",
       href: "/products",
       icon: Package,
       roles: ["ADMIN"],
-    },
-    {
-      label: "Customer Portal",
-      href: "/portal",
-      icon: UserCircle2,
-      roles: ["CUSTOMER"],
     },
   ];
 
@@ -105,7 +99,7 @@ export function Header() {
 
           {role === "CUSTOMER" && (
             <span className="hidden lg:inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              Self-Service Portal
+              Customer Portal Mode
             </span>
           )}
 
