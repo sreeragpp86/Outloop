@@ -9,17 +9,17 @@ export function StatusBadge({ stage }: StatusBadgeProps) {
   const getStyles = () => {
     switch (stage) {
       case "ACTIVE":
-        return "bg-emerald-500/10 text-emerald-600 border-emerald-500/20";
+        return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/25";
       case "CONFIRMED":
-        return "bg-amber-500/10 text-amber-600 border-amber-500/20";
+        return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25";
       case "QUOTATION":
-        return "bg-blue-500/10 text-blue-600 border-blue-500/20";
+        return "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/25";
       case "PAUSED":
-        return "bg-orange-500/10 text-orange-600 border-orange-500/20";
+        return "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/25";
       case "CLOSED":
       case "DRAFT":
       default:
-        return "bg-zinc-500/10 text-zinc-500 border-zinc-500/20";
+        return "bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 border-zinc-500/25";
     }
   };
 
@@ -41,18 +41,18 @@ interface InvoiceStatusBadgeProps {
 export function InvoiceStatusBadge({ status, isOverdue = false }: InvoiceStatusBadgeProps) {
   const getStyles = () => {
     if (isOverdue && status !== "PAID" && status !== "CANCELLED") {
-      return "bg-amber-500/10 text-amber-600 border-amber-500/20";
+      return "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/25";
     }
     switch (status) {
       case "PAID":
-        return "bg-emerald-500/10 text-emerald-600 border-emerald-500/20";
+        return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/25";
       case "CONFIRMED":
-        return "bg-amber-500/10 text-amber-600 border-amber-500/20";
+        return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25";
       case "CANCELLED":
-        return "bg-rose-500/10 text-rose-600 border-rose-500/20";
+        return "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/25";
       case "DRAFT":
       default:
-        return "bg-zinc-500/10 text-zinc-500 border-zinc-500/20";
+        return "bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 border-zinc-500/25";
     }
   };
 
@@ -75,12 +75,12 @@ export function RoleBadge({ role }: RoleBadgeProps) {
   const getStyles = () => {
     switch (normalized) {
       case "ADMIN":
-        return "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20";
+        return "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-500/25";
       case "STAFF":
-        return "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20";
+        return "bg-sky-500/10 text-sky-700 dark:text-sky-400 border-sky-500/25";
       case "CUSTOMER":
       default:
-        return "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20";
+        return "bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 border-zinc-500/25";
     }
   };
 

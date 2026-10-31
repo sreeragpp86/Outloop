@@ -14,6 +14,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Clock,
+  Download,
 } from 'lucide-react';
 import { useRole } from '@/context/RoleContext';
 import { InvoiceStatusBadge } from '@/components/ui/StatusBadge';
@@ -21,6 +22,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { MetricCard } from '@/components/ui/MetricCard';
 import { PaymentModal } from '@/components/invoices/PaymentModal';
 import { BillingRunModal } from '@/components/invoices/BillingRunModal';
+import { exportToCsv } from '@/lib/csv';
 
 interface InvoiceListItem {
   id: string;
@@ -150,6 +152,29 @@ export default function InvoicesPage() {
     };
   }, [invoices, role, persona.id]);
 
+  const handleExportCsv = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const headers = [
+      'Invoice Number',
+      'Customer',
+      'Amount',
+      'Status',
+      'Issue Date',
+      'Due Date',
+      'Paid Date',
+    ];
+    const rows = filteredInvoices.map((inv) => [
+      inv.invoice_number,
+      inv.customer?.name || 'Customer Account',
+      Number(inv.total_amount).toFixed(2),
+      inv.is_overdue ? 'OVERDUE' : inv.status,
+      inv.created_at ? inv.created_at.slice(0, 10) : '',
+      inv.due_date,
+      inv.paid_at ? inv.paid_at.slice(0, 10) : '—',
+    ]);
+    exportToCsv(`brightloop-invoices-${today}.csv`, headers, rows);
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -225,7 +250,7 @@ export default function InvoicesPage() {
           ))}
         </div>
 
-        {/* Search & Refresh */}
+        {/* Search & Actions */}
         <div className="flex items-center gap-2">
           <div className="relative w-full sm:w-64">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -238,9 +263,18 @@ export default function InvoicesPage() {
             />
           </div>
           <button
+            onClick={handleExportCsv}
+            disabled={filteredInvoices.length === 0}
+            title="Export filtered invoices to CSV"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export CSV
+          </button>
+          <button
             onClick={fetchInvoices}
             title="Refresh list"
-            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors active:scale-[0.98]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -278,12 +312,27 @@ export default function InvoicesPage() {
                   <td colSpan={8} className="py-12 text-center">
                     <div className="flex flex-col items-center justify-center gap-2 max-w-sm mx-auto text-zinc-500">
                       <FileText className="w-8 h-8 stroke-1 text-zinc-400" />
-                      <p className="font-medium text-zinc-800 dark:text-zinc-200">No invoices found</p>
+                      <p className="font-medium text-zinc-800 dark:text-zinc-200">
+                        {searchQuery || activeTab !== 'ALL'
+                          ? 'No matching invoices found'
+                          : 'No invoices found'}
+                      </p>
                       <p className="text-xs text-zinc-400">
-                        {searchQuery
-                          ? 'No invoice records match your active search terms.'
+                        {searchQuery || activeTab !== 'ALL'
+                          ? 'No invoice records match your active search terms or category.'
                           : 'There are no invoices in this view category yet.'}
                       </p>
+                      {(searchQuery || activeTab !== 'ALL') && (
+                        <button
+                          onClick={() => {
+                            setSearchQuery('');
+                            setActiveTab('ALL');
+                          }}
+                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors active:scale-[0.98]"
+                        >
+                          Reset Filters
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

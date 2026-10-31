@@ -202,8 +202,10 @@ export default function CustomerPortalPage() {
       {activeTab === "SUBSCRIPTIONS" && (
         <div className="space-y-4">
           {subscriptions.length === 0 ? (
-            <div className="py-12 text-center text-xs text-zinc-400 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg">
-              No active subscription agreements found for this account.
+            <div className="flex flex-col items-center justify-center py-12 px-4 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-500">
+              <FileText className="w-8 h-8 stroke-1 text-zinc-400 mb-2" />
+              <p className="font-medium text-zinc-800 dark:text-zinc-200 text-xs">No active subscriptions</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">No subscription contracts are registered to this customer account yet.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -283,8 +285,12 @@ export default function CustomerPortalPage() {
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {invoices.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-8 text-center text-zinc-400">
-                      No invoices issued for this account yet.
+                    <td colSpan={7} className="py-12 text-center">
+                      <div className="flex flex-col items-center justify-center gap-1.5 text-zinc-500">
+                        <FileText className="w-8 h-8 stroke-1 text-zinc-400" />
+                        <p className="font-medium text-zinc-800 dark:text-zinc-200 text-xs">No invoices issued</p>
+                        <p className="text-[11px] text-zinc-400">There are no invoices issued for this customer account yet.</p>
+                      </div>
                     </td>
                   </tr>
                 ) : (

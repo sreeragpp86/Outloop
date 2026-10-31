@@ -199,47 +199,55 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
-                {products.map((p) => (
-                  <tr key={p.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-                    <td className="py-3 px-4 font-sans font-medium text-zinc-900 dark:text-zinc-100">
-                      <div>{p.name}</div>
-                      <div className="text-[11px] text-zinc-400 font-normal">{p.notes || "—"}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-sans font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                        {p.product_type}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-semibold text-zinc-900 dark:text-zinc-100">
-                      ${Number(p.sales_price).toFixed(2)}
-                    </td>
-                    <td className="py-3 px-4 text-zinc-500">
-                      ${Number(p.cost_price || 0).toFixed(2)}
-                    </td>
-                    <td className="py-3 px-4 text-zinc-500">
-                      {Number(p.tax_rate).toFixed(2)}%
-                    </td>
-                    <td className="py-3 px-4 font-sans">
-                      {p.variants && p.variants.length > 0 ? (
-                        p.variants.map((v: any) => (
-                          <div
-                            key={v.id}
-                            className="inline-flex items-center gap-1.5 rounded border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs dark:border-zinc-700 dark:bg-zinc-800"
-                          >
-                            <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                              {v.variant_name}
-                            </span>
-                            <span className="font-mono text-zinc-500">
-                              (+${Number(v.extra_price).toFixed(2)})
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <span className="text-zinc-400 text-xs">—</span>
-                      )}
+                {products.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-zinc-400 font-sans">
+                      No products configured in catalog yet.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  products.map((p) => (
+                    <tr key={p.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
+                      <td className="py-3 px-4 font-sans font-medium text-zinc-900 dark:text-zinc-100">
+                        <div>{p.name}</div>
+                        <div className="text-[11px] text-zinc-400 font-normal">{p.notes || "—"}</div>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-sans font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                          {p.product_type}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-zinc-900 dark:text-zinc-100">
+                        ${Number(p.sales_price).toFixed(2)}
+                      </td>
+                      <td className="py-3 px-4 text-zinc-500">
+                        ${Number(p.cost_price || 0).toFixed(2)}
+                      </td>
+                      <td className="py-3 px-4 text-zinc-500">
+                        {Number(p.tax_rate).toFixed(2)}%
+                      </td>
+                      <td className="py-3 px-4 font-sans">
+                        {p.variants && p.variants.length > 0 ? (
+                          p.variants.map((v: any) => (
+                            <div
+                              key={v.id}
+                              className="inline-flex items-center gap-1.5 rounded border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                                {v.variant_name}
+                              </span>
+                              <span className="font-mono text-zinc-500">
+                                (+${Number(v.extra_price).toFixed(2)})
+                              </span>
+                            </div>
+                          ))
+                        ) : (
+                          <span className="text-zinc-400 text-xs">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -262,50 +270,58 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
-                {plans.map((pl) => (
-                  <tr key={pl.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-                    <td className="py-3 px-4 font-sans font-medium text-zinc-900 dark:text-zinc-100">
-                      {pl.name}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-sans font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                        {pl.billing_interval}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-zinc-700 dark:text-zinc-300">
-                      {pl.min_quantity} units
-                    </td>
-                    <td className="py-3 px-4 font-sans">
-                      {pl.can_pause ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-600 text-xs">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          Yes
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-zinc-400 text-xs">
-                          <XCircle className="h-3.5 w-3.5" />
-                          No
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4 font-sans">
-                      {pl.can_renew ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-600 text-xs">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                          Enabled
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-zinc-400 text-xs">
-                          <XCircle className="h-3.5 w-3.5" />
-                          Disabled
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4 font-sans text-zinc-500">
-                      {pl.auto_close_on_end ? "Yes" : "No"}
+                {plans.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-zinc-400 font-sans">
+                      No recurring plans configured yet.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  plans.map((pl) => (
+                    <tr key={pl.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
+                      <td className="py-3 px-4 font-sans font-medium text-zinc-900 dark:text-zinc-100">
+                        {pl.name}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-sans font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                          {pl.billing_interval}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-zinc-700 dark:text-zinc-300">
+                        {pl.min_quantity} units
+                      </td>
+                      <td className="py-3 px-4 font-sans">
+                        {pl.can_pause ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-600 text-xs">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            Yes
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-zinc-400 text-xs">
+                            <XCircle className="h-3.5 w-3.5" />
+                            No
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 font-sans">
+                        {pl.can_renew ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-600 text-xs">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            Enabled
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-zinc-400 text-xs">
+                            <XCircle className="h-3.5 w-3.5" />
+                            Disabled
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 font-sans text-zinc-500">
+                        {pl.auto_close_on_end ? "Yes" : "No"}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -328,43 +344,51 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
-                {discounts.map((d) => (
-                  <tr key={d.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-                    <td className="py-3 px-4 font-semibold text-zinc-900 dark:text-zinc-100">
-                      {d.code}
-                    </td>
-                    <td className="py-3 px-4 font-sans">
-                      <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                        {d.discount_type}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-semibold text-emerald-600">
-                      {d.discount_type === "PERCENTAGE" ? `${d.value}% OFF` : `-$${Number(d.value).toFixed(2)}`}
-                    </td>
-                    <td className="py-3 px-4 font-sans text-zinc-600 dark:text-zinc-400 text-xs">
-                      {d.min_quantity > 0 && `Min ${d.min_quantity} units`}
-                      {d.min_quantity > 0 && d.min_amount > 0 && " • "}
-                      {d.min_amount > 0 && `Min $${Number(d.min_amount).toLocaleString()} order`}
-                      {!d.min_quantity && !d.min_amount && "No minimum threshold"}
-                    </td>
-                    <td className="py-3 px-4 text-zinc-500">
-                      {d.used_count || 0} / {d.max_uses || "∞"} used
-                    </td>
-                    <td className="py-3 px-4 font-sans">
-                      {d.is_active ? (
-                        <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-medium">
-                          <CheckCircle2 className="h-3 w-3" />
-                          Active
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-zinc-400 text-xs font-medium">
-                          <XCircle className="h-3 w-3" />
-                          Inactive
-                        </span>
-                      )}
+                {discounts.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-zinc-400 font-sans">
+                      No discount rules or promotional vouchers configured yet.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  discounts.map((d) => (
+                    <tr key={d.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
+                      <td className="py-3 px-4 font-semibold text-zinc-900 dark:text-zinc-100">
+                        {d.code}
+                      </td>
+                      <td className="py-3 px-4 font-sans">
+                        <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                          {d.discount_type}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-emerald-600">
+                        {d.discount_type === "PERCENTAGE" ? `${d.value}% OFF` : `-$${Number(d.value).toFixed(2)}`}
+                      </td>
+                      <td className="py-3 px-4 font-sans text-zinc-600 dark:text-zinc-400 text-xs">
+                        {d.min_quantity > 0 && `Min ${d.min_quantity} units`}
+                        {d.min_quantity > 0 && d.min_amount > 0 && " • "}
+                        {d.min_amount > 0 && `Min $${Number(d.min_amount).toLocaleString()} order`}
+                        {!d.min_quantity && !d.min_amount && "No minimum threshold"}
+                      </td>
+                      <td className="py-3 px-4 text-zinc-500">
+                        {d.used_count || 0} / {d.max_uses || "∞"} used
+                      </td>
+                      <td className="py-3 px-4 font-sans">
+                        {d.is_active ? (
+                          <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-medium">
+                            <CheckCircle2 className="h-3 w-3" />
+                            Active
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-zinc-400 text-xs font-medium">
+                            <XCircle className="h-3 w-3" />
+                            Inactive
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

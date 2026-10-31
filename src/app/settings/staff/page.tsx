@@ -224,8 +224,19 @@ export default function StaffSettingsPage() {
                 </tr>
               ) : staff.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-8 text-center text-zinc-400">
-                    No internal team members found.
+                  <td colSpan={6} className="py-12 text-center">
+                    <div className="flex flex-col items-center justify-center gap-1.5 text-zinc-500">
+                      <Users className="w-8 h-8 stroke-1 text-zinc-400" />
+                      <p className="font-medium text-zinc-800 dark:text-zinc-200 text-xs">No staff members found</p>
+                      <p className="text-[11px] text-zinc-400">Invite colleagues to grant access to quotation management and billing operations.</p>
+                      <button
+                        onClick={() => setIsInviteOpen(true)}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 rounded-md active:scale-[0.98] transition-colors"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                        Invite Staff Member
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ) : (

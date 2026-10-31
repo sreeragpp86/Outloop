@@ -8,12 +8,14 @@ import {
   Search, 
   ArrowUpRight, 
   RefreshCw,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import { useRole } from '@/context/RoleContext';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { NewSubscriptionDrawer } from '@/components/subscriptions/NewSubscriptionDrawer';
+import { exportToCsv } from '@/lib/csv';
 
 interface SubscriptionSummary {
   id: string;
@@ -117,6 +119,29 @@ export default function SubscriptionsPage() {
     };
   }, [subscriptions, role, persona.id]);
 
+  const handleExportCsv = () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const headers = [
+      'Reference',
+      'Customer',
+      'Plan',
+      'Interval',
+      'Grand Total',
+      'Stage',
+      'Created Date',
+    ];
+    const rows = filteredSubscriptions.map(sub => [
+      sub.sub_number,
+      sub.customer_name,
+      sub.plan_name,
+      sub.billing_interval,
+      Number(sub.grand_total).toFixed(2),
+      sub.stage,
+      sub.created_at ? sub.created_at.slice(0, 10) : '',
+    ]);
+    exportToCsv(`brightloop-subscriptions-${today}.csv`, headers, rows);
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -178,9 +203,18 @@ export default function SubscriptionsPage() {
             />
           </div>
           <button
+            onClick={handleExportCsv}
+            disabled={filteredSubscriptions.length === 0}
+            title="Export filtered subscriptions to CSV"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export CSV
+          </button>
+          <button
             onClick={fetchSubscriptions}
             title="Refresh list"
-            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors active:scale-[0.98]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -217,21 +251,38 @@ export default function SubscriptionsPage() {
                   <td colSpan={7} className="py-12 text-center">
                     <div className="flex flex-col items-center justify-center gap-2 max-w-sm mx-auto text-zinc-500">
                       <FileText className="w-8 h-8 stroke-1 text-zinc-400" />
-                      <p className="font-medium text-zinc-800 dark:text-zinc-200">No subscriptions found</p>
+                      <p className="font-medium text-zinc-800 dark:text-zinc-200">
+                        {searchQuery || activeTab !== 'ALL'
+                          ? 'No matching subscriptions found'
+                          : 'No subscriptions found'}
+                      </p>
                       <p className="text-xs text-zinc-400">
-                        {searchQuery 
-                          ? 'No results match your active search terms.' 
+                        {searchQuery || activeTab !== 'ALL'
+                          ? 'No records match your active filter or search query.'
                           : 'There are no records in this view stage yet.'}
                       </p>
-                      {role !== 'CUSTOMER' && (
-                        <button
-                          onClick={() => setIsDrawerOpen(true)}
-                          className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          Create Quotation
-                        </button>
-                      )}
+                      <div className="mt-2 flex items-center gap-2">
+                        {(searchQuery || activeTab !== 'ALL') && (
+                          <button
+                            onClick={() => {
+                              setSearchQuery('');
+                              setActiveTab('ALL');
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors active:scale-[0.98]"
+                          >
+                            Reset Filters
+                          </button>
+                        )}
+                        {role !== 'CUSTOMER' && (
+                          <button
+                            onClick={() => setIsDrawerOpen(true)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-md transition-colors active:scale-[0.98]"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            Create Quotation
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </td>
                 </tr>
