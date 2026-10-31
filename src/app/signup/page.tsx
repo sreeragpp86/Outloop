@@ -100,11 +100,24 @@ export default function SignupPage() {
   return (
     <div className="min-h-[82vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6">
+        {/* Navigation back to landing */}
+        <div className="flex items-center justify-between text-xs">
+          <Link
+            href="/welcome"
+            className="inline-flex items-center gap-1 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+          >
+            ← Public Site
+          </Link>
+          <span className="text-zinc-400 font-mono text-[11px]">Brightloop Edition</span>
+        </div>
+
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-white font-bold text-sm dark:bg-zinc-100 dark:text-zinc-900 shadow-md font-mono">
-            OL
-          </div>
+          <Link href="/welcome" className="inline-flex">
+            <div className="h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-white font-bold text-sm dark:bg-zinc-100 dark:text-zinc-900 shadow-md font-mono flex">
+              OL
+            </div>
+          </Link>
           <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Create your account
           </h1>

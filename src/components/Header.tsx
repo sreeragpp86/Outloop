@@ -11,6 +11,7 @@ import {
   Receipt,
   Package,
   Users,
+  ExternalLink,
 } from "lucide-react";
 
 export function Header() {
@@ -108,6 +109,15 @@ export function Header() {
               Customer Portal Mode
             </span>
           )}
+
+          <Link
+            href="/welcome"
+            className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 px-2 py-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors active:scale-[0.98]"
+            title="View Public Landing Page"
+          >
+            <span>Public Site</span>
+            <ExternalLink className="h-3 w-3 opacity-60" />
+          </Link>
 
           <PersonaSwitcher />
         </div>

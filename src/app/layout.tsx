@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
 import { RoleProvider } from "@/context/RoleContext";
-import { Header } from "@/components/Header";
+import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
   title: "Outloop | Enterprise Subscription Engine",
@@ -19,20 +19,7 @@ export default function RootLayout({
       <body className="min-h-full bg-zinc-50/60 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-50">
         <Suspense fallback={<div className="h-14 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950" />}>
           <RoleProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1 print:p-0">
-                <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 print:p-0 print:m-0 print:max-w-none">
-                  {children}
-                </div>
-              </main>
-              <footer className="border-t border-zinc-200/80 bg-white py-4 text-center text-xs text-zinc-500 dark:border-zinc-800/80 dark:bg-zinc-950 dark:text-zinc-500 print:hidden">
-                <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-                  <span>Outloop Subscription Engine • Brightloop Software Inc.</span>
-                  <span className="font-mono text-[11px]">Relational PostgreSQL • Supabase Verified</span>
-                </div>
-              </footer>
-            </div>
+            <AppShell>{children}</AppShell>
           </RoleProvider>
         </Suspense>
       </body>
